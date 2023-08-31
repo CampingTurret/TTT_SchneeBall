@@ -33,9 +33,8 @@ namespace Turrets_Items
 		public override bool MuzzleFlashLight => false;
 		public override void PrimaryAttack()
 		{
-			PrimaryAmmo -= 1;
 			//ShootBullet( 00, 0.0f, 1000 );
-			PlaySound( "rust_pistol.shoot" );
+			PlaySound( "throw" );
 			//ShootEffects();
 			if ( Game.IsServer )
 			{
@@ -45,20 +44,6 @@ namespace Turrets_Items
 
 		
 		}
-
-		//public override void OnBulletTraceHit( TraceResult trace )
-		//{
-		//
-		//	if ( trace.Entity is TerrorTown.Player )
-		//	{
-		//		trace.Entity.Components.Add( new SnowmanAttack() );
-		//		IEnumerable<SnowmanAttack> attacks = trace.Entity.Components.GetAll<SnowmanAttack>();
-		//		foreach ( SnowmanAttack attack in attacks )
-		//		{
-		// 			attack.Set_Values( (TerrorTown.Player)trace.Entity );
-		//		}
-		//	}
-		//}
 	}
 
 	public class Snowball : BasePhysics
@@ -66,7 +51,7 @@ namespace Turrets_Items
 		TerrorTown.Player Thrower;
 		
 		private float start_speed = 1500f;
-		private float radius = 50f;
+		private float radius = 40f;
 		private List<TerrorTown.Player> AffectedList = new List<TerrorTown.Player>();
 		public void ThrowMe( Vector3 dir, TerrorTown.Player ply )
 		{
@@ -175,8 +160,8 @@ namespace Turrets_Items
 					if ( victim.Corpse != null )
 					{
 						snowman = new ModelEntity( "models/snowman.vmdl" );
-						snowman.Position = victim.Position;
-						snowman.Rotation = victim.Rotation;
+						snowman.Position = victim.Corpse.Position;
+						snowman.Rotation = new Rotation(0,0,1,victim.Rotation.w);
 						victim.Corpse.Delete();
 						Entity.Components.Remove( this );
 
