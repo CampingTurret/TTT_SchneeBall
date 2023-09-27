@@ -14,7 +14,7 @@ namespace Turrets_Items
 
 	[Title( "SchneeBall" )]
 	[Category( "Weapons" )]
-	[TraitorBuyable( "Weapons", 1, 0 )]
+	[TraitorBuyable( "Throwables", 1, 0 )]
 
 	public class SchneeBall : Gun
 	{
@@ -130,6 +130,7 @@ namespace Turrets_Items
 		private RealTimeUntil death;
 		private bool killed = false;
 		private ModelEntity snowman;
+		private Sound music;
 		public SnowmanAttack()
 		{
 			death = 20;
@@ -138,9 +139,16 @@ namespace Turrets_Items
 		public void Set_Values( TerrorTown.Player ply )
 		{
 			victim = ply;
-			victim.PlaySound( "cristmassong" );
+			music = victim.PlaySound( "cristmassong" );
 		}
 
+		[Event( "Player.PostOnKilled" )]
+		public void Remove_Music()
+		{
+			//Sandbox no work
+			//music.Stop(To.Everyone);
+			
+		}
 
 		[GameEvent.Tick.Server]
 		public void Track_Time()
